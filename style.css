@@ -1,0 +1,288 @@
+/* =========================================================
+   1. 全局基础样式
+   可在这里调整页面背景、字体、默认颜色等
+   ========================================================= */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  font-family: "Noto Serif SC", "Songti SC", serif;
+  background: #f3eee7;
+  color: #594b43;
+}
+
+/* =========================================================
+   2. 页面布局
+   ========================================================= */
+.scene {
+  width: min(92vw, 620px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.hint {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: 0.18em;
+}
+
+.instruction {
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: #8c7b70;
+}
+
+/* =========================================================
+   3. 信封整体
+   position: relative 为内部绝对定位元素提供参照
+   ========================================================= */
+.envelope {
+  position: relative;
+  display: block;
+  width: min(78vw, 360px);
+  aspect-ratio: 1.55 / 1;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  perspective: 1000px;
+  filter: drop-shadow(0 18px 18px rgba(76, 54, 40, 0.16));
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 键盘操作时显示焦点提示 */
+.envelope:focus-visible {
+  outline: 2px solid #9b6b52;
+  outline-offset: 10px;
+  border-radius: 8px;
+}
+
+/* 信封背板 */
+.envelope__back {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #d9bda5;
+  border-radius: 5px;
+}
+
+/* =========================================================
+   4. 信纸
+   默认收在信封里；打开时向上移动
+   可在这里调整信纸尺寸、颜色和动画时长
+   ========================================================= */
+.letter {
+  position: absolute;
+  z-index: 2;
+  left: 8%;
+  bottom: 5%;
+  width: 84%;
+  height: 88%;
+  display: block;
+  overflow: hidden;
+  padding: 22px 20px;
+  text-align: left;
+  background: #fffdf8;
+  color: #5b4b40;
+  box-shadow: 0 2px 8px rgba(70, 50, 35, 0.12);
+  transition: transform 6000ms cubic-bezier(.2, .75, .25, 1);
+}
+
+.letter__content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.letter__title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.letter__body {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.letter__signature {
+  align-self: flex-end;
+  margin-top: 8px;
+}
+
+/* =========================================================
+   5. 信封前侧折翼
+   使用伪元素绘制三角形，形成信封折叠效果
+   ========================================================= */
+.envelope__front {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  border-radius: 5px;
+  pointer-events: none;
+  transition: transform 1000ms cubic-bezier(.2, .75, .25, 1);
+}
+
+.envelope__front::before,
+.envelope__front::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+/* 左右两侧折翼 */
+.envelope__front::before {
+  background: #cda98d;
+  clip-path: polygon(0 0, 50% 55%, 0 100%, 0 0, 100% 0, 50% 55%, 100% 100%, 100% 0);
+}
+
+/* 底部折翼 */
+.envelope__front::after {
+  background: #e4c9b2;
+  clip-path: polygon(0 100%, 50% 48%, 100% 100%);
+}
+
+/* =========================================================
+   6. 信封翻盖
+   transform-origin 决定翻盖从哪里旋转
+   ========================================================= */
+.envelope__flap {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 58%;
+  background: #e8cfb9;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top center;
+  transform: rotateX(-0deg);
+  transition: transform 650ms ease;
+  backface-visibility: visible;
+  transition: transform 3000ms cubic-bezier(.2, .75, .25, 1);
+}
+
+/* 精致复古封蜡 */
+.envelope__seal {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  top: 53%;
+
+  width: 38px;
+  height: 38px;
+
+  display: grid;
+  place-items: center;
+
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+
+  /* 蜡质渐变 */
+  background:
+    radial-gradient(
+      circle at 32% 25%,
+      #d99579 0%,
+      #bd735d 28%,
+      #a65e4b 58%,
+      #814437 100%
+    );
+
+  color: #fff0dc;
+  font-size: 17px;
+  font-family: Georgia, serif;
+
+  /* 细腻边缘 */
+  border: 1px solid rgba(255, 220, 190, 0.55);
+  outline: 1px solid rgba(116, 57, 43, 0.35);
+  outline-offset: -4px;
+
+  /* 立体质感 */
+  box-shadow:
+    0 3px 6px rgba(65, 35, 25, 0.28),
+    0 1px 2px rgba(255, 225, 195, 0.35) inset,
+    0 -3px 5px rgba(91, 42, 30, 0.22) inset;
+
+  /* 柔和过渡 */
+  transition:
+    opacity 3000ms ease,
+    transform 500ms ease,
+    box-shadow 500ms ease;
+}
+
+/* 鼠标悬停时微微浮起 */
+.envelope__seal:hover {
+  transform: translate(-50%, -50%) scale(1.06);
+  box-shadow:
+    0 5px 10px rgba(65, 35, 25, 0.3),
+    0 1px 3px rgba(255, 225, 195, 0.4) inset,
+    0 -3px 5px rgba(91, 42, 30, 0.2) inset;
+}
+
+/* =========================================================
+   7. 打开状态
+   JS 给信封添加 .is-open 类即可触发这些动画
+   ========================================================= */
+/* 打开信封 */
+.envelope.is-open .envelope__flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+  transition-duration: 800ms;
+}
+
+.envelope.is-open .letter {
+  transform: translateY(-72%);
+  transition-duration: 1500ms;
+  transition-delay: 220ms;
+}
+
+.envelope.is-open .envelope__seal {
+  opacity: 0;
+  pointer-events: none;
+  transition-duration: 300ms;
+}
+
+/* 关闭信封 */
+.envelope:not(.is-open) .envelope__flap {
+  transition-duration: 3000ms;
+  z-index: 3;
+  transition-delay: 3000ms;
+}
+
+.envelope:not(.is-open) .letter {
+  z-index: 1;
+  transition-duration: 6000ms;
+  transition-delay: 0ms;
+}
+
+.envelope:not(.is-open) .envelope__seal {
+  transition-duration: 500ms;
+}
+
+/* 小屏幕适配：避免信纸文字过挤 */
+@media (max-width: 420px) {
+  .letter {
+    padding: 14px 13px;
+  }
+
+  .letter__content {
+    gap: 8px;
+    font-size: 11px;
+  }
+
+  .letter__title {
+    font-size: 13px;
+  }
+}

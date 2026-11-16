@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>一封信</title>
+
+  <!-- CSS 接口：页面样式与信封动画写在 style.css 中 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   
+  
+  <main class="scene">
+    <!-- 页面标题：可替换成日期、寄件人或一句引导语 -->
+    <p class="hint" id="hint">有一封信，想交给你</p>
+
+    <!-- 信封整体：点击此区域切换打开/关闭状态 -->
+    <button class="envelope" id="envelope"
+            type="button"
+            aria-label="打开信封"
+            aria-expanded="false">
+
+      <!-- 信封背面/主体：信纸放在这个容器内 -->
+      <span class="envelope__back" aria-hidden="true"></span>
+
+      <!-- 信纸：把这里的示例文字替换成你的信件内容 -->
+      <span class="letter" id="letter">
+        <span class="letter__content">
+          <!-- 信件标题 -->
+          <strong class="letter__title"></strong>
+
+          <!-- 信件正文：可继续添加段落、图片或其他内容 -->
+          <span class="letter__body" style="opacity: 0.7; font-size: 18px;">
+            <span></span>
+            <span>这里什么都没有哦~</span>
+          </span>
+
+          <!-- 落款 -->
+          <span class="letter__signature">—— 2026.11.16</span>
+        </span>
+      </span>
+
+      <!-- 信封前侧：左右折翼与底部折翼 -->
+      <span class="envelope__front" aria-hidden="true"></span>
+
+      <!-- 信封翻盖：通过 CSS transform 实现翻开动画 -->
+      <span class="envelope__flap" aria-hidden="true"></span>
+
+      <!-- 装饰：信封中央的小圆点/封蜡，可替换成图标或图片 -->
+      <span class="envelope__seal" aria-hidden="true">✉</span>
+    </button>
+
+    <!-- 操作提示：由 JS 根据开合状态更新 -->
+    <p class="instruction" id="instruction">点击信封，拆开这份心意</p>
+  </main>
+
+  <!-- JS 接口：点击事件与开合状态控制写在 script.js 中 -->
+  <script src="script.js"></script>
+</body>
+</html>
